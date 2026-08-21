@@ -44,11 +44,11 @@ body {
 #app {
   position: relative;
   z-index: 10;
-  width: 420px;
+  width: 470px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 14px 16px 12px;
+  padding: 14px 18px 12px;
   background: var(--app-bg);
   backdrop-filter: blur(18px) saturate(1.4);
   border: 1px solid var(--border);
@@ -371,7 +371,7 @@ body {
   border: 1px solid var(--border);
   color: var(--txt-dim);
   font-size: 11px;
-  padding: 5px 10px;
+  padding: 5px 8px;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
@@ -497,7 +497,7 @@ body {
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 6px; }
 
 /* ── Responsive ── */
-@media (max-width: 460px) {
+@media (max-width: 510px) {
   #app { width: 96vw; padding: 12px; }
   #album-art { width: 90px; height: 90px; }
 }
