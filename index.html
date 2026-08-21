@@ -1,19 +1,150 @@
-<html>
-  <head>
-    <title>BearStudio</title>
-  </head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-  <body>
-    <h1>ʕ•ᴥ•ʔ</h1>
-    <h1>BearStudio</h1>
-      <input type="file" id="fileInput" accept="audio/*" multiple> <br><br>
-    <canvas id="albumArt"></canvas><br><br>
-    <audio id="audioPlayer" controls>
-      Your browser does not support the audio element.
-    </audio>
-   <button onclick="changeMode()">Change Mode</button>
-       <script src="script.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WaterWaveMusic</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="visualizer"></canvas>
+
+  <div id="app">
+
+    <!-- Top status bar -->
+    <div id="topbar">
+      <span id="tb-title">WaterWave</span>
+      <div id="tb-right">
+        <span id="tb-clock">00:00</span>
+        <span id="tb-battery">▐▐▐▐▌</span>
+      </div>
+    </div>
+
+    <!-- Album art + info -->
+    <div id="center">
+      <div id="art-wrap">
+        <div id="album-art">
+          <div id="art-icon">♪</div>
+          <canvas id="disc-canvas"></canvas>
+        </div>
+      </div>
+
+      <div id="song-info">
+        <div id="song-title-wrap">
+          <div id="song-title">Selecciona una canción</div>
+        </div>
+        <div id="song-artist">—</div>
+        <div id="song-album">—</div>
+        <div id="song-num"></div>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div id="progress-row">
+      <span id="time-cur">0:00</span>
+      <div id="prog-track">
+        <div id="prog-fill"></div>
+        <div id="prog-thumb"></div>
+      </div>
+      <span id="time-tot">0:00</span>
+    </div>
+
+    <!-- Volume -->
+    <div id="volume-row">
+      <span class="vol-icon">🔈</span>
+      <div id="vol-track">
+        <div id="vol-fill"></div>
+        <div id="vol-thumb"></div>
+      </div>
+      <span class="vol-icon">🔊</span>
+    </div>
+
+    <!-- Controls -->
+    <div id="controls">
+      <button id="btn-shuffle" class="ctrl-btn side-btn" title="Aleatoria">⇄</button>
+      <button id="btn-prev"    class="ctrl-btn"          title="Anterior">⏮</button>
+      <button id="btn-play"    class="ctrl-btn play-btn" title="Play / Pausa">▶</button>
+      <button id="btn-next"    class="ctrl-btn"          title="Siguiente">⏭</button>
+      <button id="btn-repeat"  class="ctrl-btn side-btn" title="Repetir">↻</button>
+    </div>
+
+    <!-- Random viz controls (visible only in mode 3) -->
+    <div id="random-controls" class="hidden">
+      <button id="btn-new-viz"    class="rnd-btn" title="Generar nueva animación">🔀 Nueva</button>
+      <button id="btn-save-viz"   class="rnd-btn" title="Guardar esta animación">💾 Guardar</button>
+      <button id="btn-open-saved" class="rnd-btn" title="Ver guardadas">📂 Guardadas</button>
+    </div>
+
+    <!-- Bottom bar -->
+    <div id="bottombar">
+      <button id="btn-playlist" class="bar-btn">☰ Lista</button>
+      <div id="viz-selector">
+        <button class="viz-btn active" data-mode="0">Barras</button>
+        <button class="viz-btn"        data-mode="1">Partíc.</button>
+        <button class="viz-btn"        data-mode="2">Onda</button>
+        <button class="viz-btn"        data-mode="3">🎲</button>
+      </div>
+      <button id="btn-theme" class="bar-btn" title="Tema de color">🎨</button>
+      <button id="btn-car"   class="bar-btn" title="Car display">🚗</button>
+      <label  class="bar-btn" for="fileInput" title="Agregar música">＋</label>
+      <input type="file" id="fileInput" accept="audio/*" multiple hidden />
+    </div>
+
+  </div><!-- #app -->
+
+  <!-- Playlist panel -->
+  <div id="playlist-panel" class="hidden">
+    <div id="pl-header">
+      <span>Lista de reproducción</span>
+      <button id="btn-close-pl">✕</button>
+    </div>
+    <ul id="playlist"></ul>
+  </div>
+
+  <!-- Backdrop del panel de tema -->
+  <div id="theme-backdrop" class="hidden"></div>
+
+  <!-- Color Theme panel (bottom sheet) -->
+  <div id="theme-panel" class="hidden">
+    <div class="theme-drag-handle"></div>
+    <div id="theme-header">
+      <span>🎨 Tema de color</span>
+      <button id="btn-close-theme">✕</button>
+    </div>
+    <p class="theme-section-label">Presets</p>
+    <div id="theme-presets"></div>
+    <p class="theme-section-label">Personalizado</p>
+    <div id="theme-custom">
+      <div class="custom-row">
+        <label for="pick-accent">Acento principal</label>
+        <input type="color" id="pick-accent" value="#00dcff" />
+      </div>
+      <div class="custom-row">
+        <label for="pick-accent2">Acento secundario</label>
+        <input type="color" id="pick-accent2" value="#7b5fff" />
+      </div>
+      <div class="custom-row">
+        <label for="pick-bg">Fondo</label>
+        <input type="color" id="pick-bg" value="#03040f" />
+      </div>
+      <button id="btn-apply-custom" class="apply-btn">Aplicar combinación</button>
+    </div>
+  </div>
+
+  <!-- Backdrop del panel de guardadas -->
+  <div id="saved-backdrop" class="hidden"></div>
+
+  <!-- Saved visualizations panel (bottom sheet) -->
+  <div id="saved-panel" class="hidden">
+    <div class="theme-drag-handle"></div>
+    <div id="saved-header">
+      <span>📂 Visualizaciones guardadas</span>
+      <button id="btn-close-saved">✕</button>
+    </div>
+    <div id="saved-list"></div>
+  </div>
+
+  <audio id="audio" preload="metadata"></audio>
+  <script src="script.js"></script>
+</body>
 </html>
