@@ -84,8 +84,9 @@
         <button class="viz-btn"        data-mode="2">Onda</button>
         <button class="viz-btn"        data-mode="3">🎲</button>
       </div>
-      <button id="btn-theme" class="bar-btn" title="Tema de color">🎨</button>
-      <button id="btn-car"   class="bar-btn" title="Car display">🚗</button>
+      <button id="btn-theme"     class="bar-btn" title="Tema de color">🎨</button>
+      <button id="btn-immersive" class="bar-btn" title="Despejar pantalla">⛶</button>
+      <button id="btn-car"       class="bar-btn" title="Car display">🚗</button>
       <label  class="bar-btn" for="fileInput" title="Agregar música">＋</label>
       <input type="file" id="fileInput" accept="audio/*" multiple hidden />
     </div>
@@ -143,6 +144,9 @@
     </div>
     <div id="saved-list"></div>
   </div>
+
+  <!-- Tap hint para modo inmersivo -->
+  <div id="tap-hint">Toca para salir · Esc</div>
 
   <audio id="audio" preload="metadata"></audio>
   <script src="script.js"></script>

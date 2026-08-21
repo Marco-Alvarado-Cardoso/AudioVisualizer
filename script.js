@@ -489,6 +489,7 @@ vizBtns.forEach(btn => {
 // ── Keyboard shortcuts ────────────────────────────────────────
 document.addEventListener('keydown', e => {
   if (e.target.tagName === 'INPUT') return;
+  if (e.code === 'Escape' && immersive) { toggleImmersive(); return; }
   if (e.code === 'Space')       { e.preventDefault(); togglePlay(); }
   if (e.code === 'ArrowRight')  { audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 5); }
   if (e.code === 'ArrowLeft')   { audio.currentTime = Math.max(0, audio.currentTime - 5); }
@@ -694,6 +695,26 @@ function drawWave(W, H) {
   ctx.stroke();
 
   ctx.shadowBlur = 0;
+}
+
+// ── Modo inmersivo (despejar pantalla) ───────────────────────
+let immersive = false;
+const btnImmersive = document.getElementById('btn-immersive');
+const tapHintEl    = document.getElementById('tap-hint');
+
+btnImmersive.addEventListener('click', toggleImmersive);
+
+// Clic sobre el canvas visualizador saldrá del modo inmersivo
+canvas.addEventListener('click', () => { if (immersive) toggleImmersive(); });
+
+function toggleImmersive() {
+  immersive = !immersive;
+  document.body.classList.toggle('immersive', immersive);
+  btnImmersive.classList.toggle('active', immersive);
+  if (immersive) {
+    tapHintEl.style.opacity = '1';
+    setTimeout(() => { tapHintEl.style.opacity = '0'; }, 2800);
+  }
 }
 
 // ── Car Mode button ───────────────────────────────────────────

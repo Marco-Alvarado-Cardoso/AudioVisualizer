@@ -839,3 +839,51 @@ body {
   color: #ff6060;
   border-color: rgba(255,80,80,0.35);
 }
+
+/* ── Modo inmersivo (despejar pantalla) ── */
+body.immersive #app {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+}
+#app {
+  transition: opacity 0.45s ease;
+}
+body.immersive #visualizer {
+  cursor: pointer;
+  opacity: 1;
+}
+/* Panels siguen visibles sobre el canvas si estaban abiertos */
+body.immersive #playlist-panel,
+body.immersive #theme-panel,
+body.immersive #theme-backdrop,
+body.immersive #saved-panel,
+body.immersive #saved-backdrop {
+  pointer-events: auto;
+}
+
+/* Botón activo cuando modo inmersivo está encendido */
+#btn-immersive.active {
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: var(--glow);
+}
+
+/* Tap hint */
+#tap-hint {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 200;
+  text-shadow: 0 0 12px rgba(0, 220, 255, 0.6);
+  white-space: nowrap;
+}
